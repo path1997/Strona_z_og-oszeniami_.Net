@@ -1,0 +1,46 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+<h1 class="text-center" style="margin-bottom:40px;">My ads</h1>
+
+<div class="row">
+    <div class="col-md-4"><h3 class="text-center">Photo</h3></div>
+    <div class="col-md-4"><h3 class="text-center">Name</h3></div>
+    <div class="col-md-2"><h3 class="text-center">Price</h3></div>
+    <div class="col-md-2"><h3>Options</h3></div>
+</div>
+
+@{
+    if (Request.IsAuthenticated)
+    {
+        foreach (var item in @Model)
+        {
+            string nazwa = item.Name;
+            <div class="row">
+                <hr />
+
+                <div class="col-md-4 center-block">
+                    <a href="/Ads/Details/@item.Id">
+                        <img src="~/images/@item.Url" height="168" width="300" />
+                    </a>
+                </div>
+                <div class="col-md-4 vertical-center">
+                    <h4 class="text-center" style="width:100%;">@Html.ActionLink(nazwa, "../Ads/Details", new { id = item.Id })</h4>
+                </div>
+                <div class="col-md-2 vertical-center">
+                    <h4 class="text-center" style="width:100%;">@item.Price zł</h4>
+                </div>
+
+                @{ System.Diagnostics.Debug.WriteLine(User.Identity.Name);
+                    <div class="col-md-2 vertical-center">
+                        @Html.ActionLink("Edit", "Edit", "Ads", new { id = item.Id }, new { @class = "btn btn-default" })
+                        @Html.ActionLink("Delete", "Delete", "Ads", new { id = item.Id }, new { @class = "btn btn-default" })
+                    </div>
+                }
+            </div>
+
+        }
+    }
+}

@@ -1,0 +1,204 @@
+﻿
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h1 class="text-center" style="margin-bottom:20px;">@ViewBag.CategoryName</h1>
+
+@*<div>
+        <h4>Category</h4>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.Name)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Name)
+            </dd>
+
+        </dl>
+    </div>
+    <p>
+        @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+        @Html.ActionLink("Back to List", "Index")
+    </p>*@
+@using (@Html.BeginForm())
+{
+    <div class="row">
+        <div class="col-md-2">
+            <h4 class="text-right">Sort </h4>
+        </div>
+        <div class="col-md-2">
+            <select name="sortid" class="form-control">
+                @if (ViewBag.sortid == "1")
+                {
+                    <option value="1" selected>Name ascending</option>
+                }
+                else
+                {
+                    <option value="1">Name ascending</option>
+                }
+                @if (ViewBag.sortid == "2")
+                {
+                    <option value="2" selected>Name descending</option>
+                }
+                else
+                {
+                    <option value="2">Name descending</option>
+                }
+                @if (ViewBag.sortid == "3")
+                {
+                    <option value="3" selected>Price ascending</option>
+                }
+                else
+                {
+                    <option value="3">Price ascending</option>
+                }
+                @if (ViewBag.sortid == "4")
+                {
+                    <option value="4" selected>Price descending</option>
+                } else
+                {
+                <option value="4">Price descending</option>
+                }
+                </select>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-2">
+            <h4 class="text-right">Product name </h4>
+        </div>
+        <div class="col-md-2">
+            <input class="form-control" type="text" name="pname" value="@ViewBag.Pname" />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-2">
+            <h4 class="text-right">Category </h4>
+        </div>
+        <div class="col-md-2">
+            @Html.DropDownList("CategoryId", null, htmlAttributes: new { @class = "form-control" })
+            <span class="field-validation-valid text-danger" data-valmsg-for="CategoryId" data-valmsg-replace="true"></span>
+        </div>
+        <div class="col-md-2">
+            <input type="submit" value="Select" class="btn btn-default" />
+        </div>
+    </div>
+}
+@{ int ilosc = 0;
+    foreach (var item in @Model)
+    {
+        if (ViewBag.Pname == null)
+        {
+            ilosc++;
+        }
+        else
+        {
+            string nazwa1 = item.Name;
+            string nazwa2 = nazwa1.ToLower();
+            string pnames = ViewBag.Pname;
+            string pnames1 = pnames.ToLower();
+            if (nazwa2.Contains(pnames1))
+            {
+                ilosc++;
+            }
+        }
+    }
+    if (ilosc >= 1)
+    {
+        <div class="row">
+            <div class="col-md-4"><h3 class="text-center">Photo</h3></div>
+            <div class="col-md-4"><h3 class="text-center">Name</h3></div>
+            <div class="col-md-2"><h3 class="text-center">Price</h3></div>
+            @if (User.IsInRole("Admin"))
+            {
+                <div class="col-md-2"><h3 class="text-center">Opcja</h3></div>
+            }
+        </div>
+
+        foreach (var item in @Model)
+        {
+            string nazwa = item.Name;
+            string nazwa1 = nazwa.ToLower();
+            string pnames = ViewBag.Pname;
+            if (pnames != null)
+            {
+                pnames = pnames.ToLower();
+            }
+            System.Diagnostics.Debug.WriteLine(pnames + " " + nazwa1);
+            if (ViewBag.Pname == null)
+            {
+                <div class="row">
+                    <hr />
+
+                    <div class="col-md-4 center-block">
+                        <a href="/Ads/Details/@item.Id">
+                            <img src="~/images/@item.Url" height="168" width="300" />
+                        </a>
+                    </div>
+                    <div class="col-md-4 vertical-center">
+                        <h4 class="text-center" style="width:100%;">@Html.ActionLink(nazwa, "../Ads/Details", new { id = item.Id })</h4>
+                    </div>
+                    <div class="col-md-2 vertical-center">
+                        <h4 class="text-center" style="width:100%;">@item.Price zł</h4>
+                    </div>
+
+                    @{ System.Diagnostics.Debug.WriteLine(User.Identity.Name);
+                        if (User.IsInRole("Admin"))
+                        {
+                            System.Diagnostics.Debug.WriteLine(User.Identity.Name);
+                            <div class="col-md-2 vertical-center">
+                                @Html.ActionLink("Edit", "Edit", "Ads", new { id = item.Id }, new { @class = "btn btn-default" })
+                                @Html.ActionLink("Delete", "Delete", "Ads", new { id = item.Id }, new { @class = "btn btn-default" })
+                            </div>
+                        }
+                        else
+                        {
+                            System.Diagnostics.Debug.WriteLine("Nie Jestem adminem");
+                        }
+                    }
+                </div>
+            }
+            else if (nazwa1.Contains(pnames))
+            {
+                <div class="row">
+                    <hr />
+
+                    <div class="col-md-4 center-block">
+                        <a href="/Ads/Details/@item.Id">
+                            <img src="~/images/@item.Url" height="168" width="300" />
+                        </a>
+                    </div>
+                    <div class="col-md-4 vertical-center">
+                        <h4 class="text-center" style="width:100%;">@Html.ActionLink(nazwa, "../Ads/Details", new { id = item.Id })</h4>
+                    </div>
+                    <div class="col-md-2 vertical-center">
+                        <h4 class="text-center" style="width:100%;">@item.Price zł</h4>
+                    </div>
+
+                    @{ System.Diagnostics.Debug.WriteLine(User.Identity.Name);
+                        if (User.IsInRole("Admin"))
+                        {
+                            // System.Diagnostics.Debug.WriteLine(User.Identity.Name);
+                            <div class="col-md-2 vertical-center">
+                                @Html.ActionLink("Edytuj", "Edit", "Ads", new { id = item.Id }, new { @class = "btn btn-default" })
+                                @Html.ActionLink("Usuń", "Delete", "Ads", new { id = item.Id }, new { @class = "btn btn-default" })
+                            </div>
+                        }
+                        else
+                        {
+                            //System.Diagnostics.Debug.WriteLine("Nie Jestem adminem");
+                        }
+                    }
+                </div>
+            }
+        }
+    }
+    else
+    {
+        <h2 class="text-center">Brak ogłoszeń</h2>
+    }
+}
+

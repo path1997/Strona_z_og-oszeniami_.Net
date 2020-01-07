@@ -1,0 +1,36 @@
+﻿@model IEnumerable<Ogloszenia5.Models.Category>
+
+@{
+    ViewBag.Title = "Category list";
+}
+
+<h2>Category list</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create",null,new { @class = "btn btn-default" })
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+        <th>
+            Options
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Name)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.Id },new { @class = "btn btn-default" }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.Id },new { @class = "btn btn-default" })
+        </td>
+    </tr>
+}
+
+</table>
+<div class="row"></div>

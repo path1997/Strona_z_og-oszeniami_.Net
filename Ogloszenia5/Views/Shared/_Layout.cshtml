@@ -1,0 +1,116 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - My ASP.NET Application</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    @*<link rel="stylesheet" type="text/css"
+              href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+        <script src="https://code.jquery.com/jquery-3.4.1.js"
+                integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
+                crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>*@
+
+    <style>
+        .marginesy {
+            margin-top: 30px;
+            margin-bottom: 5px;
+        }
+        body{
+            background-image: url("http://13.80.137.25/asp/background.jpg");
+        }
+        .body-content{
+            background-color: rgba(255,255,255,0.8);
+            border: 2px solid white;
+            border-radius: 25px;
+            padding: 20px;
+        }
+        .jumbotron{
+            background-color: rgba(255,255,255,0);
+        }
+        hr {
+            background-color: black; 
+            height: 1px; 
+            border: 0;
+        }   
+        .vertical-center{
+            min-height: 100%;
+            min-height: 150px;
+            display: flex;
+            align-items: center;
+        }
+        .center-block {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @Html.ActionLink("Janusz OLX", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    @if (Request.IsAuthenticated)
+                    {
+                        <li class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                Ads
+                                <span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li>@Html.ActionLink("Add ad", "Create", "Ads")</li>
+                                <li>@Html.ActionLink("My ads", "MyAds", "Ads")</li>
+                                <li>@Html.ActionLink("All ads", "Details", "Categories", new { id = 1 }, null)</li>
+                            </ul>
+                        </li>
+                    }
+                    else
+                    {
+                        <li>@Html.ActionLink("All ads", "Details", "Categories", new { id = 1 }, null)</li>
+                    }
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <li class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                Categories
+                                <span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li>@Html.ActionLink("Category list", "Index", "Categories")</li>
+                                <li>@Html.ActionLink("Add category", "Create", "Categories")</li>
+                            </ul>
+                        </li>
+                        
+                    }
+                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+                </ul>
+                            @Html.Partial("_LoginPartial")
+</div>
+        </div>
+    </div>
+
+    <div class="container body-content">
+        @RenderBody()
+        @*<hr />*@
+        @*<footer>
+            <p>&copy; @DateTime.Now.Year - Janusz OLX ASP.NET</p>
+        </footer>*@
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

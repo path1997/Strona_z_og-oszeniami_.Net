@@ -1,0 +1,108 @@
+﻿
+
+@{
+    ViewBag.Title = "Edit";
+}
+
+<h2>Edit</h2>
+
+
+@using (Html.BeginForm("Edit", "Ads", FormMethod.Post, 
+                            new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+
+<div class="form-horizontal">
+    <h4>Ad</h4>
+    <hr />
+    @{foreach (var item in @Model)
+        {
+        <div class="form-group">
+                <label class="control-label col-md-2" for="Name">Name</label>
+            <div class="col-md-10">
+                <input class="form-control text-box single-line" type="text" name="Name" id="Name" value="@item.Name" style="width: 100%;" />
+                <span class="field-validation-valid text-danger" data-valmsg-for="Name" data-valmsg-replace="true"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2" for="Description">Description</label>
+            <div class="col-md-10">
+                <textarea cols="50" htmlattributes="{ class = form-control }" id="Description" name="Description" rows="2">@item.Description</textarea>
+                <input type="hidden" name="ApplicationUserId" value="@ViewBag.userId" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2" for="Price">Price</label>
+            <div class="col-md-10">
+                <input class="form-control text-box single-line" data-val="true" data-val-number="Pole Price musi być liczbą." data-val-required="Pole Price jest wymagane." id="Price" name="Price" type="number" value="@item.Price">
+                <span class="field-validation-valid text-danger" data-valmsg-for="Price" data-valmsg-replace="true"></span>
+            </div>
+        </div>
+            break;
+        }}
+    @{
+        if (User.IsInRole("Admin"))
+        {
+        <div class="form-group">
+                <label class="control-label col-md-2" for="CategoryId">CategoryId</label>
+            <div class="col-md-10">
+                @Html.DropDownList("CategoryId", null, htmlAttributes: new { @class = "form-control" })
+            </div>
+        </div>
+        }
+    }
+<div class="row">
+    @{foreach (var item in @Model)
+        {
+
+            if (item.Position == 1)
+            {
+                <div class="col-md-3">
+                    <img src="~/images/@item.Url" width="160" height="60">
+                    <input type="checkbox" name="foto1c" value="true" /><span>Usuń</span>
+                </div>
+            }
+            if (item.Position == 2)
+            {
+                <div class="col-md-3">
+                    <img src="~/images/@item.Url" width="160" height="60">
+                    <input type="checkbox" name="foto2c" value="true" /><span>Usuń</span>
+                </div>
+            }
+            if (item.Position == 3)
+            {
+                <div class="col-md-3">
+                    <img src="~/images/@item.Url" width="160" height="60">
+                    <input type="checkbox" name="foto3c" value="true" /><span>Usuń</span>
+                </div>
+                }
+            }
+        }
+    </div>
+<div class="row">
+        <div class="col-md-3">
+            <input type="file" name="file1" id="file1" style="width: 100%;" />
+        </div>
+        <div class="col-md-3">
+            <input type="file" name="file2" id="file2" style="width: 100%;" />
+        </div>
+        <div class="col-md-3">
+            <input type="file" name="file3" id="file3" style="width: 100%;" />
+        </div>
+</div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to my ads", "MyAds","Ads")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
